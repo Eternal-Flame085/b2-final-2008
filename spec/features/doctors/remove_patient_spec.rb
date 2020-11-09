@@ -16,32 +16,30 @@ describe 'As a visitor' do
     it "I see a a button to remove that patient from the doctor" do
       visit "/doctors/#{@alex.id}"
 
-      within id="#patients" do
-        within id="#patient-#{@patient_1.id}" do
-          expect(page).to have_button("Remove Patient")
-        end
+      within id="#patient-#{@patient_1.id}" do
+        expect(page).to have_button("Remove Patient")
       end
 
-      within id="#patients" do
-        within id="#patient-#{@patient_2.id}" do
-          expect(page).to have_button("Remove Patient")
-        end
+      within id="#patient-#{@patient_2.id}" do
+        expect(page).to have_button("Remove Patient")
       end
     end
 
     it "When I click on the button i am brought back to the doctor show page and the patient is no longer listed" do
       visit "/doctors/#{@alex.id}"
 
-      within id="#patients" do
-        within id="#patient-#{@patient_1.id}" do
-          click_button 'Remove Patient'
-        end
+      within id="#patient-#{@patient_1.id}" do
+        click_button 'Remove Patient'
       end
 
       expect(current_path).to eq("/doctors/#{@alex.id}")
 
       within id="#patients" do
         expect(page).to_not have_css("#patient-#{@patient_1.id}")
+      end
+
+      within id="#patients" do
+        expect(page).to have_css("#patient-#{@patient_2.id}")
       end
     end
   end
